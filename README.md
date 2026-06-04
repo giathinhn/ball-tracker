@@ -42,14 +42,14 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**Step 4
+**Step 4 - Download .pt**
+
 ```bash
 # - Windows (PowerShell):
 bash setup.sh
 # - Linux/macOS:
 ./setup.sh
 ```
-
 
 ## 🛠️ modes
 
