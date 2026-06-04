@@ -12,6 +12,13 @@ The project proposes a robust, modular two-pass pipeline for **detecting and tra
 2.  **Đỗ Trần Minh Phúc** - MSSV: `23120156`
 3.  **Nguyễn Gia Thịnh** - MSSV: `23120167`
 
+## 📂 Codebase Structure
+
+The project separates the CLI/IO logic from the core computer vision processing pipelines:
+
+- **[main.py](file:///d:/ball-tracker/main.py)**: The main entrypoint. Handles command-line arguments, processes the video frames, writes the outputs, and manages the CV2 display window.
+- **[sports/pipelines.py](file:///d:/ball-tracker/sports/pipelines.py)**: The processing hub. Houses the `Mode` enum, annotator instances, utility helpers (`get_crops`, `resolve_goalkeepers_team_id`), and all detection, tracking, classification, and radar pipelines.
+
 ## 💻 install
 
 We don't have a Python package yet. Install from source in a
@@ -53,11 +60,17 @@ bash setup.sh
 
 ## 🛠️ modes
 
+> [!TIP]
+> The `--device` parameter specifies which hardware to run the model on. You can use:
+> - `cpu` (default, works on any machine)
+> - `cuda` (if you have an NVIDIA GPU on Windows/Linux)
+> - `mps` (if you are on macOS Apple Silicon)
+
 - `PITCH_DETECTION` - Detects the soccer field boundaries and key points in the video.
   Useful for identifying and visualizing the layout of the soccer pitch.
 
   ```bash
-  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-pitch-detection.mp4 --device mps --mode PITCH_DETECTION
+  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-pitch-detection.mp4 --device cpu --mode PITCH_DETECTION
   ```
 
   https://github.com/user-attachments/assets/cf4df75a-89fe-4c6f-b3dc-e4d63a0ed211
@@ -67,7 +80,7 @@ bash setup.sh
   entities on the field.
 
   ```bash
-    python main.py --source_video_path data/demo.mp4 --target_video_path data/output-player-detection.mp4 --device mps --mode PLAYER_DETECTION
+  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-player-detection.mp4 --device cpu --mode PLAYER_DETECTION
   ```
 
   https://github.com/user-attachments/assets/c36ea2c1-b03e-4ffe-81bd-27391260b187
@@ -76,7 +89,7 @@ bash setup.sh
   Useful for following ball movements throughout the match.
 
   ```bash
-  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-ball-detection.mp4 --device mps --mode BALL_DETECTION
+  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-ball-detection.mp4 --device cpu --mode BALL_DETECTION
   ```
 
   https://github.com/user-attachments/assets/2fd83678-7790-4f4d-a8c0-065ef38ca031
@@ -86,7 +99,7 @@ bash setup.sh
   match.
 
   ```bash
-  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-player-tracking.mp4 --device mps --mode PLAYER_TRACKING
+  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-player-tracking.mp4 --device cpu --mode PLAYER_TRACKING
   ```
 
   https://github.com/user-attachments/assets/69be83ac-52ff-4879-b93d-33f016feb839
@@ -96,7 +109,7 @@ bash setup.sh
   analysis and visualization.
 
   ```bash
-  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-team-classification.mp4 --device mps --mode TEAM_CLASSIFICATION
+  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-team-classification.mp4 --device cpu --mode TEAM_CLASSIFICATION
   ```
 
   https://github.com/user-attachments/assets/239c2960-5032-415c-b330-3ddd094d32c7
@@ -107,7 +120,7 @@ bash setup.sh
   on the field.
 
   ```bash
-  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-radar.mp4 --device mps --mode RADAR
+  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-radar.mp4 --device cpu --mode RADAR
   ```
 
   https://github.com/user-attachments/assets/263b4cd0-2185-4ed3-9be2-cf4d8f5bfa67
