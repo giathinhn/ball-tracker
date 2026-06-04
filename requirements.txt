@@ -1,0 +1,6 @@
+ultralytics
+supervision
+umap-learn
+transformers
+opencv-python
+gdown
