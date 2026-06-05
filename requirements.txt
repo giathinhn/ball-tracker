@@ -4,3 +4,5 @@ umap-learn
 transformers
 opencv-python
 gdown
+sentencepiece
+protobuf
