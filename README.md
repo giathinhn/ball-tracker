@@ -51,12 +51,14 @@ pip install -r requirements.txt
 
 **Step 4 - Download .pt**
 
-```bash
-# - Windows (PowerShell):
-bash setup.sh
-# - Linux/macOS:
-./setup.sh
-```
+- **Windows (PowerShell/CMD):**
+  ```cmd
+  .\setup.bat
+  ```
+- **Linux/macOS:**
+  ```bash
+  ./setup.sh
+  ```
 
 ## 🛠️ modes
 
@@ -149,20 +151,3 @@ downloaded from the [Roboflow Universe](https://universe.roboflow.com/).
   the extracted features for easier clustering.
 - [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) -
   Clusters the reduced-dimension features to classify players into two teams.
-
-## 🗺️ roadmap
-
-- [ ] Add smoothing to eliminate flickering in RADAR mode.
-- [ ] Add a notebook demonstrating how to save data and perform offline data analysis.
-
-## © license
-
-This demo integrates two main components, each with its own licensing:
-
-- ultralytics: The object detection model used in this demo, YOLOv8, is distributed
-  under the [AGPL-3.0 license](https://github.com/ultralytics/ultralytics/blob/main/LICENSE).
-- sports: The analytics code that powers the sports analysis in this demo is based on
-  the [Supervision](https://github.com/roboflow/supervision) library, which is licensed
-  under the [MIT license](https://github.com/roboflow/supervision/blob/develop/LICENSE.md).
-  This makes the sports part of the code fully open source and freely usable in your
-  projects.
