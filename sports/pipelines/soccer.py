@@ -6,7 +6,10 @@ from tqdm import tqdm
 from ultralytics import YOLO
 
 from sports.annotators.soccer import draw_pitch, draw_points_on_pitch
-from sports.common.ball import BallTracker, BallAnnotator
+from typing import Optional
+
+from sports.common.ball import BallTracker, BallAnnotator, BallSpeedEstimator, KalmanBallTracker
+from sports.common.dashboard import DashboardRenderer
 from sports.common.team import TeamClassifier
 from sports.common.view import ViewTransformer
 from sports.configs.soccer import SoccerPitchConfiguration
@@ -384,3 +387,207 @@ def run_radar(source_video_path: str, device: str) -> sv.Detections:
         )
         annotated_frame = sv.draw_image(annotated_frame, radar, opacity=0.5, rect=rect)
         yield annotated_frame
+
+
+def run_ball_tracking(
+    source_video_path: str,
+    device: str,
+    fps: Optional[float] = None,
+):
+    """
+    Combined pipeline: player detection + ball tracking with speed estimation,
+    gradient motion trail, and HUD dashboard.
+
+    Detects and annotates players with bounding boxes, tracks the ball with
+    a gradient motion trail, estimates ball speed via homography-based pitch
+    mapping (ViewTransformer), and overlays a HUD dashboard with speed stats.
+
+    Args:
+        source_video_path (str): Path to the source video.
+        device (str): Device to run the model on (e.g., 'cpu', 'cuda').
+        fps (Optional[float]): Override video FPS; auto-detected if None.
+
+    Yields:
+        Iterator[np.ndarray]: Annotated BGR frames.
+    """
+    player_model = YOLO(PLAYER_DETECTION_MODEL_PATH).to(device=device)
+    ball_model   = YOLO(BALL_DETECTION_MODEL_PATH).to(device=device)
+    pitch_model  = YOLO(PITCH_DETECTION_MODEL_PATH).to(device=device)
+
+    video_info    = sv.VideoInfo.from_video_path(source_video_path)
+    effective_fps = fps if fps is not None else (video_info.fps or 25.0)
+
+    ball_tracker    = KalmanBallTracker(
+        fps=effective_fps,
+        max_miss=12,
+        min_confidence=0.25,
+        max_box_side=80,
+        gate_distance_px=160.0,
+    )
+    ball_annotator  = BallAnnotator(radius=8, buffer_size=30)
+    speed_estimator = BallSpeedEstimator(fps=effective_fps, smooth_window=9)
+    dashboard       = DashboardRenderer(
+        fps=effective_fps,
+        max_expected_kmh=120.0,
+        panel_alpha=0.80,
+        position='top-left',
+    )
+
+    def _detect_ball(image_slice: np.ndarray) -> sv.Detections:
+        result = ball_model(image_slice, imgsz=640, verbose=False)[0]
+        return sv.Detections.from_ultralytics(result)
+
+    slicer = sv.InferenceSlicer(callback=_detect_ball, slice_wh=(640, 640))
+
+    # Fit team classifier on player crops
+    crops = []
+    player_detection_generator = sv.get_video_frames_generator(
+        source_path=source_video_path, stride=STRIDE)
+    for frame in tqdm(player_detection_generator, desc='collecting crops'):
+        result = player_model(frame, imgsz=1280, verbose=False)[0]
+        detections = sv.Detections.from_ultralytics(result)
+        crops += get_crops(frame, detections[detections.class_id == PLAYER_CLASS_ID])
+
+    team_classifier = TeamClassifier(device=device)
+    if crops:
+        team_classifier.fit(crops)
+    else:
+        team_classifier = None
+
+    frame_generator = sv.get_video_frames_generator(source_path=source_video_path)
+    for frame in frame_generator:
+        # 1. Player detection
+        player_result     = player_model(frame, imgsz=1280, verbose=False)[0]
+        player_detections = sv.Detections.from_ultralytics(player_result)
+
+        players = player_detections[player_detections.class_id == PLAYER_CLASS_ID]
+        crops = get_crops(frame, players)
+        
+        if team_classifier is not None and len(crops) > 0:
+            players_team_id = team_classifier.predict(crops)
+        else:
+            players_team_id = np.array([0] * len(players), dtype=int)
+
+        goalkeepers = player_detections[player_detections.class_id == GOALKEEPER_CLASS_ID]
+        if len(players) > 0 and len(goalkeepers) > 0:
+            goalkeepers_team_id = resolve_goalkeepers_team_id(
+                players, players_team_id, goalkeepers)
+        else:
+            goalkeepers_team_id = np.array([0] * len(goalkeepers), dtype=int)
+
+        referees = player_detections[player_detections.class_id == REFEREE_CLASS_ID]
+        balls = player_detections[player_detections.class_id == BALL_CLASS_ID]
+
+        # Merge them back to a single Detections object for annotation
+        player_detections = sv.Detections.merge([players, goalkeepers, referees, balls])
+        
+        color_lookup = np.array(
+            players_team_id.tolist() +
+            goalkeepers_team_id.tolist() +
+            [REFEREE_CLASS_ID] * len(referees) +
+            [2] * len(balls)
+        )
+        
+        labels = (
+            [player_model.names[PLAYER_CLASS_ID]] * len(players) +
+            [player_model.names[GOALKEEPER_CLASS_ID]] * len(goalkeepers) +
+            [player_model.names[REFEREE_CLASS_ID]] * len(referees) +
+            [player_model.names[BALL_CLASS_ID]] * len(balls)
+        )
+
+        # 2. Pitch keypoints → ViewTransformer
+        pitch_result = pitch_model(frame, verbose=False)[0]
+        keypoints    = sv.KeyPoints.from_ultralytics(pitch_result)
+
+        transformer: Optional[ViewTransformer] = None
+        kp_xy      = keypoints.xy[0]
+        valid_mask = (kp_xy[:, 0] > 1) & (kp_xy[:, 1] > 1)
+        if valid_mask.sum() >= 4:
+            try:
+                transformer = ViewTransformer(
+                    source=kp_xy[valid_mask].astype(np.float32),
+                    target=np.array(CONFIG.vertices)[valid_mask].astype(np.float32),
+                )
+            except ValueError:
+                transformer = None
+
+        # 3. Ball detection with Kalman-guided search window
+        #
+        # Flow:
+        #   a) predict()           → advance Kalman state to frame i
+        #   b) get_search_window() → ±3σ rectangle from diagonal of P̄
+        #   c) crop + detect       → YOLO on small ROI only (1 ball max)
+        #   d) remap coords        → crop-space → full-frame space
+        #   e) correct()           → Kalman measurement update
+        #
+        frame_h, frame_w = frame.shape[:2]
+
+        # (a) Advance prediction so P̄ is ready for the search window
+        ball_tracker.predict()
+
+        # (b) Compute ±3σ search window from predicted covariance P̄
+        search_win = ball_tracker.get_search_window(
+            frame_wh=(frame_w, frame_h), k_sigma=3.0
+        )
+
+        if search_win is not None:
+            # (c) Kalman initialized — detect ONLY inside the predicted window
+            x1, y1, x2, y2 = search_win
+            crop        = frame[y1:y2, x1:x2]
+            crop_result = ball_model(crop, imgsz=640, verbose=False)[0]
+            crop_det    = sv.Detections.from_ultralytics(crop_result)
+
+            # (d) Remap bounding boxes from crop-space → full-frame space
+            if len(crop_det) > 0:
+                crop_det.xyxy[:, 0] += x1
+                crop_det.xyxy[:, 1] += y1
+                crop_det.xyxy[:, 2] += x1
+                crop_det.xyxy[:, 3] += y1
+
+            raw_detections = crop_det.with_nms(threshold=0.1)
+        else:
+            # (c) Not yet initialized — full-frame scan to find ball for the first time
+            raw_detections = slicer(frame).with_nms(threshold=0.1)
+
+        # (e) Correction phase: filter → gate → select 1 best → update Kalman
+        ball_detection = ball_tracker.correct(raw_detections, transformer)
+
+        # 4. Speed estimation via real-world pitch coordinates
+        real_xy: Optional[np.ndarray] = None
+        if transformer is not None and len(ball_detection) > 0:
+            pixel_xy = ball_detection.get_anchors_coordinates(sv.Position.CENTER)
+            try:
+                transformed = transformer.transform_points(
+                    pixel_xy.astype(np.float32)
+                )
+                real_xy = transformed[0]
+            except Exception:
+                real_xy = None
+
+        _speed_ms, speed_kmh = speed_estimator.update(real_xy)
+
+        # 5. Annotate frame
+        annotated_frame = frame.copy()
+
+        # Player bounding boxes + class labels with team colors
+        annotated_frame = BOX_ANNOTATOR.annotate(
+            annotated_frame, player_detections, custom_color_lookup=color_lookup
+        )
+        annotated_frame = BOX_LABEL_ANNOTATOR.annotate(
+            annotated_frame, player_detections, labels=labels, custom_color_lookup=color_lookup
+        )
+
+        # Ball gradient motion trail + bounding box + speed label
+        annotated_frame = ball_annotator.annotate_with_label(
+            annotated_frame, ball_detection, speed_kmh=speed_kmh
+        )
+
+        # HUD dashboard (speed bar, max/avg, distance, elapsed)
+        annotated_frame = dashboard.render(
+            annotated_frame,
+            speed_kmh=speed_kmh,
+            estimator=speed_estimator,
+        )
+
+        yield annotated_frame
+

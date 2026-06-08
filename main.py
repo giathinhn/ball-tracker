@@ -1,6 +1,7 @@
 import argparse
 from enum import Enum
-import os
+from typing import Optional
+
 import torch
 import cv2
 import supervision as sv
@@ -12,6 +13,7 @@ if not hasattr(torch, "float8_e8m0fnu"):
 from sports.pipelines import (
     run_pitch_detection,
     run_player_detection,
+    run_ball_tracking,
     run_ball_detection,
     run_player_tracking,
     run_team_classification,
@@ -23,15 +25,22 @@ class Mode(Enum):
     """
     Enum class representing different modes of operation for Soccer AI video analysis.
     """
-    PITCH_DETECTION = 'PITCH_DETECTION'
-    PLAYER_DETECTION = 'PLAYER_DETECTION'
-    BALL_DETECTION = 'BALL_DETECTION'
-    PLAYER_TRACKING = 'PLAYER_TRACKING'
+    PITCH_DETECTION     = 'PITCH_DETECTION'
+    PLAYER_DETECTION    = 'PLAYER_DETECTION'
+    BALL_DETECTION      = 'BALL_DETECTION'
+    PLAYER_TRACKING     = 'PLAYER_TRACKING'
     TEAM_CLASSIFICATION = 'TEAM_CLASSIFICATION'
-    RADAR = 'RADAR'
+    RADAR               = 'RADAR'
+    BALL_TRACKING       = 'BALL_TRACKING'
 
 
-def main(source_video_path: str, target_video_path: str, device: str, mode: Mode) -> None:
+def main(
+    source_video_path: str,
+    target_video_path: str,
+    device: str,
+    mode: Mode,
+    fps: Optional[float] = None,
+) -> None:
     # Map 'gpu' to 'cuda' to prevent PyTorch device string issues
     if device.lower() == 'gpu':
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -55,6 +64,9 @@ def main(source_video_path: str, target_video_path: str, device: str, mode: Mode
     elif mode == Mode.RADAR:
         frame_generator = run_radar(
             source_video_path=source_video_path, device=device)
+    elif mode == Mode.BALL_TRACKING:
+        frame_generator = run_ball_tracking(
+            source_video_path=source_video_path, device=device, fps=fps)
     else:
         raise NotImplementedError(f"Mode {mode} is not implemented.")
 
@@ -74,11 +86,16 @@ if __name__ == '__main__':
     parser.add_argument('--source_video_path', type=str, required=True)
     parser.add_argument('--target_video_path', type=str, required=True)
     parser.add_argument('--device', type=str, default='cpu')
-    parser.add_argument('--mode', type=Mode, default=Mode.PLAYER_DETECTION)
+    parser.add_argument('--mode', type=Mode, default=Mode.BALL_TRACKING)
+    parser.add_argument(
+        '--fps', type=float, default=None,
+        help='Override video FPS for speed calculation (auto-detected if omitted)'
+    )
     args = parser.parse_args()
     main(
         source_video_path=args.source_video_path,
         target_video_path=args.target_video_path,
         device=args.device,
-        mode=args.mode
+        mode=args.mode,
+        fps=args.fps,
     )
