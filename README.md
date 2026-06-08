@@ -127,13 +127,13 @@ pip install -r requirements.txt
 
   https://github.com/user-attachments/assets/263b4cd0-2185-4ed3-9be2-cf4d8f5bfa67
 
-- `BALL_TRACKING` - Tracks the soccer ball using a Discrete Kalman Filter, calculates
-  its real-world speed and accumulated distance via homography (ViewTransformer), and
-  overlays a HUD dashboard with real-time statistics.
-
-  ```bash
-  python main.py --source_video_path data/demo.mp4 --target_video_path data/output-ball-tracking.mp4 --device cpu --mode BALL_TRACKING
-  ```
+> [!IMPORTANT]
+> ### 🏆 `BALL_TRACKING` (Core Feature / Mode quan trọng nhất)
+> **Tracks the soccer ball using a Discrete Kalman Filter, calculates its real-world speed and accumulated distance via homography (ViewTransformer), and overlays a HUD dashboard with real-time statistics.**
+>
+> ```bash
+> python main.py --source_video_path data/demo.mp4 --target_video_path data/output-ball-tracking.mp4 --device cpu --mode BALL_TRACKING
+> ```
 
 ## ⚽ datasets
 
