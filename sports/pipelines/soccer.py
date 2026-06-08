@@ -9,6 +9,7 @@ from sports.annotators.soccer import draw_pitch, draw_points_on_pitch
 from typing import Optional
 
 from sports.common.ball import BallTracker, BallAnnotator, BallSpeedEstimator, KalmanBallTracker
+from sports.common.team_smoother import TeamIdSmoother, associate_tracker_ids
 from sports.common.dashboard import DashboardRenderer
 from sports.common.team import TeamClassifier
 from sports.common.view import ViewTransformer
@@ -274,10 +275,14 @@ def run_team_classification(source_video_path: str, device: str) -> sv.Detection
     for frame in tqdm(frame_generator, desc='collecting crops'):
         result = player_detection_model(frame, imgsz=1280, verbose=False)[0]
         detections = sv.Detections.from_ultralytics(result)
-        crops += get_crops(frame, detections[detections.class_id == PLAYER_CLASS_ID])
+        crops += get_crops(frame, detections[
+            (detections.class_id == PLAYER_CLASS_ID) | 
+            (detections.class_id == REFEREE_CLASS_ID)
+        ])
 
     team_classifier = TeamClassifier(device=device)
     team_classifier.fit(crops)
+    team_smoother = TeamIdSmoother()
 
     frame_generator = sv.get_video_frames_generator(source_path=source_video_path)
     tracker = sv.ByteTrack(minimum_consecutive_frames=3)
@@ -287,14 +292,21 @@ def run_team_classification(source_video_path: str, device: str) -> sv.Detection
         detections = tracker.update_with_detections(detections)
 
         players = detections[detections.class_id == PLAYER_CLASS_ID]
-        crops = get_crops(frame, players)
-        players_team_id = team_classifier.predict(crops)
+        players_crops = get_crops(frame, players)
+        players_team_id = team_classifier.predict(players_crops)
+
+        referees = detections[detections.class_id == REFEREE_CLASS_ID]
+        referees_crops = get_crops(frame, referees)
+        referees_team_id = team_classifier.predict(referees_crops)
+
+        if players.tracker_id is not None:
+            players_team_id = team_smoother.smooth(players.tracker_id, players_team_id)
+        if referees.tracker_id is not None:
+            referees_team_id = team_smoother.smooth(referees.tracker_id, referees_team_id)
 
         goalkeepers = detections[detections.class_id == GOALKEEPER_CLASS_ID]
         goalkeepers_team_id = resolve_goalkeepers_team_id(
             players, players_team_id, goalkeepers)
-
-        referees = detections[detections.class_id == REFEREE_CLASS_ID]
 
         # Collect tracker IDs before merging
         tracker_ids = np.concatenate([
@@ -307,7 +319,7 @@ def run_team_classification(source_video_path: str, device: str) -> sv.Detection
         color_lookup = np.array(
                 players_team_id.tolist() +
                 goalkeepers_team_id.tolist() +
-                [REFEREE_CLASS_ID] * len(referees)
+                referees_team_id.tolist()
         )
         labels = [str(int(tracker_id)) if tracker_id is not None else "" for tracker_id in tracker_ids]
 
@@ -329,10 +341,14 @@ def run_radar(source_video_path: str, device: str) -> sv.Detections:
     for frame in tqdm(frame_generator, desc='collecting crops'):
         result = player_detection_model(frame, imgsz=1280, verbose=False)[0]
         detections = sv.Detections.from_ultralytics(result)
-        crops += get_crops(frame, detections[detections.class_id == PLAYER_CLASS_ID])
+        crops += get_crops(frame, detections[
+            (detections.class_id == PLAYER_CLASS_ID) | 
+            (detections.class_id == REFEREE_CLASS_ID)
+        ])
 
     team_classifier = TeamClassifier(device=device)
     team_classifier.fit(crops)
+    team_smoother = TeamIdSmoother()
 
     frame_generator = sv.get_video_frames_generator(source_path=source_video_path)
     tracker = sv.ByteTrack(minimum_consecutive_frames=3)
@@ -344,14 +360,21 @@ def run_radar(source_video_path: str, device: str) -> sv.Detections:
         detections = tracker.update_with_detections(detections)
 
         players = detections[detections.class_id == PLAYER_CLASS_ID]
-        crops = get_crops(frame, players)
-        players_team_id = team_classifier.predict(crops)
+        players_crops = get_crops(frame, players)
+        players_team_id = team_classifier.predict(players_crops)
+
+        referees = detections[detections.class_id == REFEREE_CLASS_ID]
+        referees_crops = get_crops(frame, referees)
+        referees_team_id = team_classifier.predict(referees_crops)
+
+        if players.tracker_id is not None:
+            players_team_id = team_smoother.smooth(players.tracker_id, players_team_id)
+        if referees.tracker_id is not None:
+            referees_team_id = team_smoother.smooth(referees.tracker_id, referees_team_id)
 
         goalkeepers = detections[detections.class_id == GOALKEEPER_CLASS_ID]
         goalkeepers_team_id = resolve_goalkeepers_team_id(
             players, players_team_id, goalkeepers)
-
-        referees = detections[detections.class_id == REFEREE_CLASS_ID]
 
         # Collect tracker IDs before merging
         tracker_ids = np.concatenate([
@@ -364,7 +387,7 @@ def run_radar(source_video_path: str, device: str) -> sv.Detections:
         color_lookup = np.array(
             players_team_id.tolist() +
             goalkeepers_team_id.tolist() +
-            [REFEREE_CLASS_ID] * len(referees)
+            referees_team_id.tolist()
         )
         labels = [str(int(tracker_id)) if tracker_id is not None else "" for tracker_id in tracker_ids]
 
@@ -432,6 +455,9 @@ def run_ball_tracking(
         panel_alpha=0.80,
         position='top-left',
     )
+    player_tracker  = sv.ByteTrack(minimum_consecutive_frames=3)
+    referee_tracker = sv.ByteTrack(minimum_consecutive_frames=3)
+    team_smoother   = TeamIdSmoother()
 
     def _detect_ball(image_slice: np.ndarray) -> sv.Detections:
         result = ball_model(image_slice, imgsz=640, verbose=False)[0]
@@ -439,14 +465,17 @@ def run_ball_tracking(
 
     slicer = sv.InferenceSlicer(callback=_detect_ball, slice_wh=(640, 640))
 
-    # Fit team classifier on player crops
+    # Fit team classifier on player and referee crops
     crops = []
     player_detection_generator = sv.get_video_frames_generator(
         source_path=source_video_path, stride=STRIDE)
     for frame in tqdm(player_detection_generator, desc='collecting crops'):
         result = player_model(frame, imgsz=1280, verbose=False)[0]
         detections = sv.Detections.from_ultralytics(result)
-        crops += get_crops(frame, detections[detections.class_id == PLAYER_CLASS_ID])
+        crops += get_crops(frame, detections[
+            (detections.class_id == PLAYER_CLASS_ID) | 
+            (detections.class_id == REFEREE_CLASS_ID)
+        ])
 
     team_classifier = TeamClassifier(device=device)
     if crops:
@@ -461,12 +490,39 @@ def run_ball_tracking(
         player_detections = sv.Detections.from_ultralytics(player_result)
 
         players = player_detections[player_detections.class_id == PLAYER_CLASS_ID]
-        crops = get_crops(frame, players)
-        
-        if team_classifier is not None and len(crops) > 0:
-            players_team_id = team_classifier.predict(crops)
+        players_crops = get_crops(frame, players)
+
+        referees = player_detections[player_detections.class_id == REFEREE_CLASS_ID]
+        referees_crops = get_crops(frame, referees)
+
+        # Track players and referees separately to avoid filtering/dropping any boxes
+        temp_players = sv.Detections(
+            xyxy=players.xyxy,
+            confidence=players.confidence,
+            class_id=players.class_id,
+        )
+        tracked_players = player_tracker.update_with_detections(temp_players)
+        player_tracker_ids = associate_tracker_ids(players, tracked_players)
+
+        temp_referees = sv.Detections(
+            xyxy=referees.xyxy,
+            confidence=referees.confidence,
+            class_id=referees.class_id,
+        )
+        tracked_referees = referee_tracker.update_with_detections(temp_referees)
+        referee_tracker_ids = associate_tracker_ids(referees, tracked_referees)
+
+        if team_classifier is not None and len(players_crops) > 0:
+            players_team_id = team_classifier.predict(players_crops)
+            players_team_id = team_smoother.smooth(player_tracker_ids, players_team_id)
         else:
             players_team_id = np.array([0] * len(players), dtype=int)
+
+        if team_classifier is not None and len(referees_crops) > 0:
+            referees_team_id = team_classifier.predict(referees_crops)
+            referees_team_id = team_smoother.smooth(referee_tracker_ids, referees_team_id)
+        else:
+            referees_team_id = np.array([0] * len(referees), dtype=int)
 
         goalkeepers = player_detections[player_detections.class_id == GOALKEEPER_CLASS_ID]
         if len(players) > 0 and len(goalkeepers) > 0:
@@ -475,7 +531,6 @@ def run_ball_tracking(
         else:
             goalkeepers_team_id = np.array([0] * len(goalkeepers), dtype=int)
 
-        referees = player_detections[player_detections.class_id == REFEREE_CLASS_ID]
         balls = player_detections[player_detections.class_id == BALL_CLASS_ID]
 
         # Merge them back to a single Detections object for annotation
@@ -484,7 +539,7 @@ def run_ball_tracking(
         color_lookup = np.array(
             players_team_id.tolist() +
             goalkeepers_team_id.tolist() +
-            [REFEREE_CLASS_ID] * len(referees) +
+            referees_team_id.tolist() +
             [2] * len(balls)
         )
         
