@@ -743,4 +743,7 @@ class BallSpeedEstimator:
     def _smoothed(self) -> Tuple[float, float]:
         speed_ms = float(np.mean(self._speed_buffer)) if self._speed_buffer else 0.0
         speed_kmh = speed_ms * 3.6
+        if speed_kmh > 80.0:
+            speed_kmh = 80.0
+            speed_ms = 80.0 / 3.6
         return speed_ms, speed_kmh
