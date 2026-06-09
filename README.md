@@ -135,6 +135,61 @@ pip install -r requirements.txt
 > python main.py --source_video_path data/demo.mp4 --target_video_path data/output-ball-tracking.mp4 --device cpu --mode BALL_TRACKING
 > ```
 
+## 📊 SoccerNet Tracking Benchmark Evaluation
+
+To run tracking evaluation on the official SoccerNet Multi-Object Tracking (MOT) dataset, follow these instructions to install additional dependencies and run the benchmark.
+
+### 1. Install Extra Dependencies
+To load the SoccerNet API and calculate MOT metrics (using TrackEval), install the following packages:
+```bash
+pip install SoccerNet
+pip install git+https://github.com/JonathonLuiten/TrackEval.git
+```
+
+### 2. Run the Benchmark
+
+To compute the evaluation metrics correctly, you must download both the **visual data** (video frames) and the **official ground-truth labels**.
+
+* **Step 2.1: Download both visual data and labels (Run this first)**
+  ```bash
+  python evaluate_soccernet.py --dataset_dir data/SoccerNet/tracking --split test --download_data --download_labels
+  ```
+  *(Note: Downloading visual data `test.zip` is ~8.7GB and may take time, while downloading labels is very fast).*
+
+* **Step 2.2: Run the full tracking pipeline and print metrics**
+  ```bash
+  python evaluate_soccernet.py --dataset_dir data/SoccerNet/tracking --split test
+  ```
+  *(By default, this will run on GPU (CUDA / MPS) if available. The MOT evaluation metrics table will print directly to the console and automatically save to `benchmarks/evaluation_results.txt` once all sequences are processed).*
+
+* **Step 2.3: Re-evaluate using pre-existing predictions (Without re-running tracking)**
+  If you have already run the tracking loop and have files in `benchmarks/` folder, you can run only the evaluation phase to avoid re-running the slow model inference:
+  ```bash
+  python evaluate_soccernet.py --dataset_dir data/SoccerNet/tracking --split test --skip_tracking
+  ```
+  *(The metrics and configuration logs will be printed on screen and saved to `benchmarks/evaluation_results.txt` immediately).*
+
+> [!NOTE]
+> On every benchmark run, the complete terminal output (including the TrackEval sequence details and final metrics table) is automatically saved to [benchmarks/evaluation_results.txt](file:///d:/ball-tracker/benchmarks/evaluation_results.txt). You do not need to redirect console output manually.
+
+> [!WARNING]
+> `TrackEval` requires tracking output files for **all sequences** in the split. Using `--limit_seqs` will skip sequences and cause the final evaluation to fail with an "invalid timesteps" error.
+> 
+> If you only want to verify that the tracking and GPU execution are functioning properly on a single sequence (without running the full evaluation), you can use:
+> ```bash
+> python evaluate_soccernet.py --dataset_dir data/SoccerNet/tracking --split test --limit_seqs 1
+> ```
+
+### CLI Arguments:
+- `--dataset_dir`: Path to SoccerNet tracking dataset (default: `data/SoccerNet/tracking`).
+- `--split`: Dataset split to evaluate (`train`, `valid`, `test`, `challenge`).
+- `--download_data`: Download visual data (video frames) if not already present.
+- `--download_labels`: Download tracking ground-truth labels.
+- `--device`: Hardware device (`cpu`, `cuda`, `mps`, `gpu`). Automatically detects GPU if omitted.
+- `--limit_seqs`: Limit evaluation to first N sequences (useful for quick testing).
+- `--tracker_name`: Folder name for saving tracker predictions (default: `ByteTrack`).
+- `--skip_tracking`: Skip the model inference tracking loop and evaluate existing predictions directly.
+
 ## ⚽ datasets
 
 Original data comes from the [DFL - Bundesliga Data Shootout](https://www.kaggle.com/competitions/dfl-bundesliga-data-shootout)

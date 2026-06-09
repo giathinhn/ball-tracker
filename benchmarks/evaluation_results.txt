@@ -1,0 +1,655 @@
+==================================================
+          SOCCERNET EVALUATION METRICS
+==================================================
+ Split: TEST
+ Tracker: ByteTrack
+--------------------------------------------------
+  HOTA            : 44.83%
+  DetA            : 53.26%
+  AssA            : 37.86%
+==================================================
+
+==================================================
+          DETAILED RUN & TRACKEVAL LOGS
+==================================================
+
+[*] Running evaluation on device: cuda
+[*] Found 49 local sequences to track.
+[*] Loaded sequence map file: SNMOT-test.txt (49 expected sequences)
+[*] Skipping tracking step. Evaluating existing predictions in benchmarks folder...
+
+[*] Preparing prediction zip file for SoccerNet evaluation...
+[*] Zipping predictions from benchmarks\ByteTrack\data to benchmarks\soccernet_mot_results.zip...
+[+] Zipped predictions successfully.
+[!] Official ground truth zip file not found.
+[*] Constructing ground truth zip from sequence directories at benchmarks\temp_test_gt.zip...
+[+] Ground truth zip with 49 real and 0 mock sequences constructed.
+[*] Using ground truth zip: benchmarks\temp_test_gt.zip
+[*] Running TrackEval evaluation on SoccerNet benchmark...
+
+Eval Config:
+USE_PARALLEL         : False                         
+NUM_PARALLEL_CORES   : 8                             
+BREAK_ON_ERROR       : True                          
+RETURN_ON_ERROR      : False                         
+LOG_ON_ERROR         : D:\ball-tracker\.venv\Lib\site-packages\error_log.txt
+PRINT_RESULTS        : True                          
+PRINT_ONLY_COMBINED  : False                         
+PRINT_CONFIG         : True                          
+TIME_PROGRESS        : True                          
+DISPLAY_LESS_PROGRESS : False                         
+OUTPUT_SUMMARY       : True                          
+OUTPUT_EMPTY_CLASSES : True                          
+OUTPUT_DETAILED      : True                          
+PLOT_CURVES          : True                          
+
+MotChallenge2DBox Config:
+PRINT_CONFIG         : True                          
+GT_FOLDER            : ./temp/gt                     
+TRACKERS_FOLDER      : ./temp                        
+OUTPUT_FOLDER        : None                          
+TRACKERS_TO_EVAL     : ['test']                      
+CLASSES_TO_EVAL      : ['pedestrian']                
+BENCHMARK            : SNMOT                         
+SPLIT_TO_EVAL        : test                          
+INPUT_AS_ZIP         : False                         
+DO_PREPROC           : False                         
+TRACKER_SUB_FOLDER   : data                          
+OUTPUT_SUB_FOLDER    : eval_results                  
+TRACKER_DISPLAY_NAMES : None                          
+SEQMAP_FOLDER        : None                          
+SEQMAP_FILE          : D:\ball-tracker\.venv\Lib\site-packages\SoccerNet\Evaluation\..\data\SNMOT-test.txt
+SEQ_INFO             : None                          
+GT_LOC_FORMAT        : {gt_folder}/{seq}/gt/gt.txt   
+SKIP_SPLIT_FOL       : False                         
+
+CLEAR Config:
+METRICS              : ['HOTA', 'CLEAR', 'Identity'] 
+THRESHOLD            : 0.5                           
+PRINT_CONFIG         : True                          
+
+Identity Config:
+METRICS              : ['HOTA', 'CLEAR', 'Identity'] 
+THRESHOLD            : 0.5                           
+PRINT_CONFIG         : True                          
+
+Evaluating 1 tracker(s) on 49 sequence(s) for 1 class(es) on MotChallenge2DBox dataset using the following metrics: HOTA, CLEAR, Identity, Count
+
+
+Evaluating test
+
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-116)                    0.1465 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1019 sec
+    HOTA.eval_sequence()                                                   0.2156 sec
+    CLEAR.eval_sequence()                                                  0.0379 sec
+    Identity.eval_sequence()                                               0.0087 sec
+    Count.eval_sequence()                                                  0.0000 sec
+1 eval_sequence(SNMOT-116, test)                                         0.5131 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-117)                    0.1210 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0960 sec
+    HOTA.eval_sequence()                                                   0.2046 sec
+    CLEAR.eval_sequence()                                                  0.0349 sec
+    Identity.eval_sequence()                                               0.0080 sec
+    Count.eval_sequence()                                                  0.0000 sec
+2 eval_sequence(SNMOT-117, test)                                         0.4668 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-118)                    0.1282 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1191 sec
+    HOTA.eval_sequence()                                                   0.2342 sec
+    CLEAR.eval_sequence()                                                  0.0382 sec
+    Identity.eval_sequence()                                               0.0083 sec
+    Count.eval_sequence()                                                  0.0000 sec
+3 eval_sequence(SNMOT-118, test)                                         0.5307 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-119)                    0.1022 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0894 sec
+    HOTA.eval_sequence()                                                   0.2016 sec
+    CLEAR.eval_sequence()                                                  0.0335 sec
+    Identity.eval_sequence()                                               0.0084 sec
+    Count.eval_sequence()                                                  0.0000 sec
+4 eval_sequence(SNMOT-119, test)                                         0.4373 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-120)                    0.1468 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0951 sec
+    HOTA.eval_sequence()                                                   0.2129 sec
+    CLEAR.eval_sequence()                                                  0.0379 sec
+    Identity.eval_sequence()                                               0.0115 sec
+    Count.eval_sequence()                                                  0.0000 sec
+5 eval_sequence(SNMOT-120, test)                                         0.5066 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-121)                    0.1255 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0945 sec
+    HOTA.eval_sequence()                                                   0.2149 sec
+    CLEAR.eval_sequence()                                                  0.0357 sec
+    Identity.eval_sequence()                                               0.0083 sec
+    Count.eval_sequence()                                                  0.0000 sec
+6 eval_sequence(SNMOT-121, test)                                         0.4808 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-122)                    0.2239 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1135 sec
+    HOTA.eval_sequence()                                                   0.2049 sec
+    CLEAR.eval_sequence()                                                  0.0361 sec
+    Identity.eval_sequence()                                               0.0083 sec
+    Count.eval_sequence()                                                  0.0000 sec
+7 eval_sequence(SNMOT-122, test)                                         0.5887 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-123)                    0.1321 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0947 sec
+    HOTA.eval_sequence()                                                   0.2052 sec
+    CLEAR.eval_sequence()                                                  0.0382 sec
+    Identity.eval_sequence()                                               0.0089 sec
+    Count.eval_sequence()                                                  0.0000 sec
+8 eval_sequence(SNMOT-123, test)                                         0.4815 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-124)                    0.1099 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0938 sec
+    HOTA.eval_sequence()                                                   0.2014 sec
+    CLEAR.eval_sequence()                                                  0.0371 sec
+    Identity.eval_sequence()                                               0.0082 sec
+    Count.eval_sequence()                                                  0.0000 sec
+9 eval_sequence(SNMOT-124, test)                                         0.4523 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-125)                    0.1119 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0944 sec
+    HOTA.eval_sequence()                                                   0.2207 sec
+    CLEAR.eval_sequence()                                                  0.0345 sec
+    Identity.eval_sequence()                                               0.0094 sec
+    Count.eval_sequence()                                                  0.0000 sec
+10 eval_sequence(SNMOT-125, test)                                         0.4732 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-126)                    0.1240 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0938 sec
+    HOTA.eval_sequence()                                                   0.2065 sec
+    CLEAR.eval_sequence()                                                  0.0390 sec
+    Identity.eval_sequence()                                               0.0086 sec
+    Count.eval_sequence()                                                  0.0000 sec
+11 eval_sequence(SNMOT-126, test)                                         0.4743 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-127)                    0.1748 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1151 sec
+    HOTA.eval_sequence()                                                   0.2477 sec
+    CLEAR.eval_sequence()                                                  0.0400 sec
+    Identity.eval_sequence()                                               0.0091 sec
+    Count.eval_sequence()                                                  0.0000 sec
+12 eval_sequence(SNMOT-127, test)                                         0.5902 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-128)                    0.1638 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1149 sec
+    HOTA.eval_sequence()                                                   0.2419 sec
+    CLEAR.eval_sequence()                                                  0.0399 sec
+    Identity.eval_sequence()                                               0.0095 sec
+    Count.eval_sequence()                                                  0.0000 sec
+13 eval_sequence(SNMOT-128, test)                                         0.5728 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-129)                    0.2553 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1213 sec
+    HOTA.eval_sequence()                                                   0.2275 sec
+    CLEAR.eval_sequence()                                                  0.0453 sec
+    Identity.eval_sequence()                                               0.0100 sec
+    Count.eval_sequence()                                                  0.0000 sec
+14 eval_sequence(SNMOT-129, test)                                         0.6624 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-130)                    0.1433 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0956 sec
+    HOTA.eval_sequence()                                                   0.2151 sec
+    CLEAR.eval_sequence()                                                  0.0362 sec
+    Identity.eval_sequence()                                               0.0085 sec
+    Count.eval_sequence()                                                  0.0000 sec
+15 eval_sequence(SNMOT-130, test)                                         0.5010 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-131)                    0.1481 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0966 sec
+    HOTA.eval_sequence()                                                   0.2249 sec
+    CLEAR.eval_sequence()                                                  0.0398 sec
+    Identity.eval_sequence()                                               0.0092 sec
+    Count.eval_sequence()                                                  0.0000 sec
+16 eval_sequence(SNMOT-131, test)                                         0.5209 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-132)                    0.1249 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0962 sec
+    HOTA.eval_sequence()                                                   0.2122 sec
+    CLEAR.eval_sequence()                                                  0.0368 sec
+    Identity.eval_sequence()                                               0.0083 sec
+    Count.eval_sequence()                                                  0.0000 sec
+17 eval_sequence(SNMOT-132, test)                                         0.4805 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-133)                    0.1233 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0937 sec
+    HOTA.eval_sequence()                                                   0.2054 sec
+    CLEAR.eval_sequence()                                                  0.0360 sec
+    Identity.eval_sequence()                                               0.0085 sec
+    Count.eval_sequence()                                                  0.0000 sec
+18 eval_sequence(SNMOT-133, test)                                         0.4690 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-134)                    0.1081 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0921 sec
+    HOTA.eval_sequence()                                                   0.2037 sec
+    CLEAR.eval_sequence()                                                  0.0353 sec
+    Identity.eval_sequence()                                               0.0088 sec
+    Count.eval_sequence()                                                  0.0000 sec
+19 eval_sequence(SNMOT-134, test)                                         0.4502 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-135)                    0.2537 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0962 sec
+    HOTA.eval_sequence()                                                   0.2057 sec
+    CLEAR.eval_sequence()                                                  0.0371 sec
+    Identity.eval_sequence()                                               0.0084 sec
+    Count.eval_sequence()                                                  0.0000 sec
+20 eval_sequence(SNMOT-135, test)                                         0.6032 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-136)                    0.1044 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0973 sec
+    HOTA.eval_sequence()                                                   0.1868 sec
+    CLEAR.eval_sequence()                                                  0.0300 sec
+    Identity.eval_sequence()                                               0.0086 sec
+    Count.eval_sequence()                                                  0.0000 sec
+21 eval_sequence(SNMOT-136, test)                                         0.4294 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-137)                    0.1109 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0859 sec
+    HOTA.eval_sequence()                                                   0.1581 sec
+    CLEAR.eval_sequence()                                                  0.0269 sec
+    Identity.eval_sequence()                                               0.0080 sec
+    Count.eval_sequence()                                                  0.0000 sec
+22 eval_sequence(SNMOT-137, test)                                         0.3921 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-138)                    0.1357 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1005 sec
+    HOTA.eval_sequence()                                                   0.2321 sec
+    CLEAR.eval_sequence()                                                  0.0439 sec
+    Identity.eval_sequence()                                               0.0107 sec
+    Count.eval_sequence()                                                  0.0000 sec
+23 eval_sequence(SNMOT-138, test)                                         0.5264 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-139)                    0.1300 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0977 sec
+    HOTA.eval_sequence()                                                   0.2194 sec
+    CLEAR.eval_sequence()                                                  0.0378 sec
+    Identity.eval_sequence()                                               0.0084 sec
+    Count.eval_sequence()                                                  0.0000 sec
+24 eval_sequence(SNMOT-139, test)                                         0.4955 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-140)                    0.1303 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0954 sec
+    HOTA.eval_sequence()                                                   0.2014 sec
+    CLEAR.eval_sequence()                                                  0.0350 sec
+    Identity.eval_sequence()                                               0.0086 sec
+    Count.eval_sequence()                                                  0.0000 sec
+25 eval_sequence(SNMOT-140, test)                                         0.4729 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-141)                    0.1159 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0963 sec
+    HOTA.eval_sequence()                                                   0.2056 sec
+    CLEAR.eval_sequence()                                                  0.0366 sec
+    Identity.eval_sequence()                                               0.0083 sec
+    Count.eval_sequence()                                                  0.0000 sec
+26 eval_sequence(SNMOT-141, test)                                         0.4648 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-142)                    0.1010 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0905 sec
+    HOTA.eval_sequence()                                                   0.1901 sec
+    CLEAR.eval_sequence()                                                  0.0324 sec
+    Identity.eval_sequence()                                               0.0078 sec
+    Count.eval_sequence()                                                  0.0000 sec
+27 eval_sequence(SNMOT-142, test)                                         0.4241 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-143)                    0.0913 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0912 sec
+    HOTA.eval_sequence()                                                   0.1965 sec
+    CLEAR.eval_sequence()                                                  0.0340 sec
+    Identity.eval_sequence()                                               0.0090 sec
+    Count.eval_sequence()                                                  0.0000 sec
+28 eval_sequence(SNMOT-143, test)                                         0.4246 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-144)                    0.1045 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0929 sec
+    HOTA.eval_sequence()                                                   0.2003 sec
+    CLEAR.eval_sequence()                                                  0.0340 sec
+    Identity.eval_sequence()                                               0.0080 sec
+    Count.eval_sequence()                                                  0.0000 sec
+29 eval_sequence(SNMOT-144, test)                                         0.4419 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-145)                    0.0918 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0871 sec
+    HOTA.eval_sequence()                                                   0.1774 sec
+    CLEAR.eval_sequence()                                                  0.0303 sec
+    Identity.eval_sequence()                                               0.0078 sec
+    Count.eval_sequence()                                                  0.0000 sec
+30 eval_sequence(SNMOT-145, test)                                         0.3965 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-146)                    0.0864 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0856 sec
+    HOTA.eval_sequence()                                                   0.1679 sec
+    CLEAR.eval_sequence()                                                  0.0291 sec
+    Identity.eval_sequence()                                               0.0078 sec
+    Count.eval_sequence()                                                  0.0000 sec
+31 eval_sequence(SNMOT-146, test)                                         0.3788 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-147)                    0.0765 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0816 sec
+    HOTA.eval_sequence()                                                   0.1403 sec
+    CLEAR.eval_sequence()                                                  0.0239 sec
+    Identity.eval_sequence()                                               0.0075 sec
+    Count.eval_sequence()                                                  0.0000 sec
+32 eval_sequence(SNMOT-147, test)                                         0.3318 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-148)                    0.2242 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0939 sec
+    HOTA.eval_sequence()                                                   0.1954 sec
+    CLEAR.eval_sequence()                                                  0.0349 sec
+    Identity.eval_sequence()                                               0.0085 sec
+    Count.eval_sequence()                                                  0.0000 sec
+33 eval_sequence(SNMOT-148, test)                                         0.5593 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-149)                    0.1186 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0929 sec
+    HOTA.eval_sequence()                                                   0.2125 sec
+    CLEAR.eval_sequence()                                                  0.0355 sec
+    Identity.eval_sequence()                                               0.0083 sec
+    Count.eval_sequence()                                                  0.0000 sec
+34 eval_sequence(SNMOT-149, test)                                         0.4701 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-150)                    0.1266 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0948 sec
+    HOTA.eval_sequence()                                                   0.2154 sec
+    CLEAR.eval_sequence()                                                  0.0358 sec
+    Identity.eval_sequence()                                               0.0115 sec
+    Count.eval_sequence()                                                  0.0000 sec
+35 eval_sequence(SNMOT-150, test)                                         0.4865 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-187)                    0.1606 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1013 sec
+    HOTA.eval_sequence()                                                   0.2212 sec
+    CLEAR.eval_sequence()                                                  0.0383 sec
+    Identity.eval_sequence()                                               0.0091 sec
+    Count.eval_sequence()                                                  0.0000 sec
+36 eval_sequence(SNMOT-187, test)                                         0.5328 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-188)                    0.1850 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1008 sec
+    HOTA.eval_sequence()                                                   0.2458 sec
+    CLEAR.eval_sequence()                                                  0.0495 sec
+    Identity.eval_sequence()                                               0.0092 sec
+    Count.eval_sequence()                                                  0.0000 sec
+37 eval_sequence(SNMOT-188, test)                                         0.5931 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-189)                    0.2496 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0938 sec
+    HOTA.eval_sequence()                                                   0.2144 sec
+    CLEAR.eval_sequence()                                                  0.0365 sec
+    Identity.eval_sequence()                                               0.0081 sec
+    Count.eval_sequence()                                                  0.0000 sec
+38 eval_sequence(SNMOT-189, test)                                         0.6046 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-190)                    0.1333 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0927 sec
+    HOTA.eval_sequence()                                                   0.2086 sec
+    CLEAR.eval_sequence()                                                  0.0374 sec
+    Identity.eval_sequence()                                               0.0085 sec
+    Count.eval_sequence()                                                  0.0000 sec
+39 eval_sequence(SNMOT-190, test)                                         0.4828 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-191)                    0.1400 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1004 sec
+    HOTA.eval_sequence()                                                   0.2112 sec
+    CLEAR.eval_sequence()                                                  0.0371 sec
+    Identity.eval_sequence()                                               0.0086 sec
+    Count.eval_sequence()                                                  0.0000 sec
+40 eval_sequence(SNMOT-191, test)                                         0.4997 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-192)                    0.1301 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0982 sec
+    HOTA.eval_sequence()                                                   0.2107 sec
+    CLEAR.eval_sequence()                                                  0.0376 sec
+    Identity.eval_sequence()                                               0.0075 sec
+    Count.eval_sequence()                                                  0.0000 sec
+41 eval_sequence(SNMOT-192, test)                                         0.4865 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-193)                    0.1286 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0932 sec
+    HOTA.eval_sequence()                                                   0.2182 sec
+    CLEAR.eval_sequence()                                                  0.0366 sec
+    Identity.eval_sequence()                                               0.0084 sec
+    Count.eval_sequence()                                                  0.0000 sec
+42 eval_sequence(SNMOT-193, test)                                         0.4871 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-194)                    0.2730 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0944 sec
+    HOTA.eval_sequence()                                                   0.2213 sec
+    CLEAR.eval_sequence()                                                  0.0399 sec
+    Identity.eval_sequence()                                               0.0089 sec
+    Count.eval_sequence()                                                  0.0000 sec
+43 eval_sequence(SNMOT-194, test)                                         0.6399 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-195)                    0.1463 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.1010 sec
+    HOTA.eval_sequence()                                                   0.2173 sec
+    CLEAR.eval_sequence()                                                  0.0382 sec
+    Identity.eval_sequence()                                               0.0085 sec
+    Count.eval_sequence()                                                  0.0000 sec
+44 eval_sequence(SNMOT-195, test)                                         0.5139 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-196)                    0.1285 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0949 sec
+    HOTA.eval_sequence()                                                   0.2153 sec
+    CLEAR.eval_sequence()                                                  0.0370 sec
+    Identity.eval_sequence()                                               0.0087 sec
+    Count.eval_sequence()                                                  0.0000 sec
+45 eval_sequence(SNMOT-196, test)                                         0.4869 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-197)                    0.1460 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0961 sec
+    HOTA.eval_sequence()                                                   0.2239 sec
+    CLEAR.eval_sequence()                                                  0.0385 sec
+    Identity.eval_sequence()                                               0.0096 sec
+    Count.eval_sequence()                                                  0.0000 sec
+46 eval_sequence(SNMOT-197, test)                                         0.5165 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-198)                    0.1543 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0972 sec
+    HOTA.eval_sequence()                                                   0.2260 sec
+    CLEAR.eval_sequence()                                                  0.0407 sec
+    Identity.eval_sequence()                                               0.0088 sec
+    Count.eval_sequence()                                                  0.0000 sec
+47 eval_sequence(SNMOT-198, test)                                         0.5295 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-199)                    0.2587 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0989 sec
+    HOTA.eval_sequence()                                                   0.2142 sec
+    CLEAR.eval_sequence()                                                  0.0384 sec
+    Identity.eval_sequence()                                               0.0091 sec
+    Count.eval_sequence()                                                  0.0000 sec
+48 eval_sequence(SNMOT-199, test)                                         0.6221 sec
+    MotChallenge2DBox.get_raw_seq_data(test, SNMOT-200)                    0.1373 sec
+    MotChallenge2DBox.get_preprocessed_seq_data(pedestrian)                0.0966 sec
+    HOTA.eval_sequence()                                                   0.2186 sec
+    CLEAR.eval_sequence()                                                  0.0377 sec
+    Identity.eval_sequence()                                               0.0088 sec
+    Count.eval_sequence()                                                  0.0000 sec
+49 eval_sequence(SNMOT-200, test)                                         0.5014 sec
+
+All sequences for test finished in 24.45 seconds
+
+HOTA: test-pedestrian              HOTA      DetA      AssA      DetRe     DetPr     AssRe     AssPr     LocA      OWTA      HOTA(0)   LocA(0)   HOTALocA(0)
+SNMOT-116                          33.461    41.333    27.381    44.768    75.193    28.983    76.607    82.534    34.931    42.781    75.773    32.416    
+SNMOT-117                          43.149    50.42     37.104    56.42     72.662    39.161    78.642    81.51     45.745    57.973    74.899    43.422    
+SNMOT-118                          45.309    53.472    38.519    59.682    71.471    41.157    70.983    79.637    47.941    62.651    72.953    45.706    
+SNMOT-119                          48.175    49.665    46.897    54.907    76.172    49.144    83.328    84.043    50.736    60.635    78.932    47.86     
+SNMOT-120                          42.333    58.207    30.909    64.024    78.086    32.848    77.641    84.085    44.479    53.217    79.324    42.214    
+SNMOT-121                          47.835    58.114    39.461    66.199    74.42     42.168    77.75     83.363    51.106    62.422    77.083    48.117    
+SNMOT-122                          31.013    46.369    20.833    50.115    75.63     22.329    73.238    81.686    32.299    40.967    75.766    31.039    
+SNMOT-123                          42.848    56.159    32.737    61.353    71.95     35.845    67.704    78.372    44.807    60.797    72.533    44.098    
+SNMOT-124                          41.355    51.33     33.471    57.776    72.987    36.368    74.078    82.149    43.96     55.035    76.072    41.866    
+SNMOT-125                          39.953    42.881    37.326    45.806    77.009    39.275    76.393    82.498    41.343    50.897    77.733    39.564    
+SNMOT-126                          51.984    58.764    46.013    63.131    77.63     48.175    79.826    81.882    53.878    68.458    77.563    53.099    
+SNMOT-127                          60.464    61.015    60.048    69.477    75.21     62.58     82.313    84.078    64.583    75.823    79.407    60.208    
+SNMOT-128                          50.075    58.899    42.636    67.191    73.674    46.293    74.958    82.726    53.514    65.777    77.452    50.945    
+SNMOT-129                          27.724    44.373    17.394    49.026    66.472    18.972    59.369    75.828    29.196    42.189    66.982    28.259    
+SNMOT-130                          34.621    46.35     25.956    51.473    73.814    27.016    78.272    82.774    36.543    44.585    76.379    34.054    
+SNMOT-131                          43.616    61.919    30.821    68.09     76.745    34.258    69.516    82.427    45.808    56.833    77.766    44.196    
+SNMOT-132                          46.876    55.826    39.455    60.854    76.123    41.737    79.073    81.858    48.99     62.248    76.818    47.818    
+SNMOT-133                          41.405    51.644    33.227    55.346    80.55     35.104    81.68     84.922    42.879    51.552    80.662    41.582    
+SNMOT-134                          55.128    62.591    48.82     66.988    81.501    51.456    80.903    84.531    57.165    67.388    80.94     54.544    
+SNMOT-135                          31.784    48.387    21.042    52.404    75.494    22.282    69.943    81.455    33.179    41.536    75.385    31.312    
+SNMOT-136                          29.982    40.17     22.429    44.195    71.176    24.729    65.141    80.698    31.48     41.254    72.597    29.949    
+SNMOT-137                          45.762    54.681    38.323    59.476    77.129    40.316    78.731    82.792    47.73     59.743    78.201    46.72     
+SNMOT-138                          37.597    54.637    25.93     60.421    75.09     27.549    72.92     82.336    39.581    49.049    77.469    37.997    
+SNMOT-139                          41.022    54.143    31.148    59.054    78.093    33.295    72.077    83.881    42.883    52.07     78.622    40.938    
+SNMOT-140                          28.208    40.534    19.706    43.588    75.078    20.444    73.836    81.927    29.297    36.125    76.702    27.709    
+SNMOT-141                          36.148    48.399    27.113    52.676    75.657    29.089    74.16     82.183    37.784    46.933    76.573    35.938    
+SNMOT-142                          22.529    27.241    18.656    28.613    75.175    19.756    72.986    81.826    23.103    29.276    75.304    22.046    
+SNMOT-143                          40.474    47.804    34.429    52.779    74.551    36.606    76.302    82.967    42.614    51.237    78.599    40.272    
+SNMOT-144                          24.743    32.512    18.932    36.113    68.53     19.655    75.793    81.661    26.127    32.518    73.256    23.821    
+SNMOT-145                          26.195    28.204    24.535    29.908    75.371    25.894    75.743    83.281    27.032    32.52     76.634    24.921    
+SNMOT-146                          38.71     40.783    36.872    44.913    71.236    39.077    76.546    80.632    40.685    52.221    72.489    37.854    
+SNMOT-147                          31.065    30.712    31.742    32.783    74.906    33.057    81.556    83.261    32.176    37.983    77.069    29.273    
+SNMOT-148                          40.193    48.647    33.296    53.213    76.098    34.966    79.779    83.095    42.087    51.843    77.065    39.953    
+SNMOT-149                          45.037    56.336    36.139    61.673    78.736    37.891    79.344    84.676    47.203    56.007    80.011    44.811    
+SNMOT-150                          41.293    47.133    36.22     60.218    63.525    38.383    80.539    84.824    46.699    51.348    79.879    41.016    
+SNMOT-187                          53.648    62.586    46.007    67.026    79.409    51.16     68.405    82.805    55.504    70.258    78.519    55.166    
+SNMOT-188                          62.322    63.081    61.822    67.949    72.921    66.885    74.511    77.932    64.682    90.434    72.027    65.137    
+SNMOT-189                          46.635    60.083    36.266    65.921    76.762    39.68     72.182    82.39     48.892    61.62     77.38     47.681    
+SNMOT-190                          49.904    60.448    41.303    66.317    75.204    43.574    77.596    81.004    52.333    67.692    75.561    51.149    
+SNMOT-191                          49.12     63.849    37.874    68.485    79.419    40.982    73.791    82.822    50.928    63.267    78.769    49.835    
+SNMOT-192                          55.393    62.014    49.52     66.545    81.882    52.1      83.544    85.113    57.394    69.477    81.399    56.554    
+SNMOT-193                          40.032    55.126    29.193    60.289    74.361    31.243    73.26     80.569    41.947    54.452    74.633    40.639    
+SNMOT-194                          58.478    65.928    51.873    70.942    80.593    54.813    82.246    83.812    60.6      76.116    79.898    60.815    
+SNMOT-195                          51.166    62.044    42.241    67.755    75.941    45.053    75.159    81.345    53.48     67.671    76.803    51.973    
+SNMOT-196                          47.586    52.328    43.29     55.97     73.822    45.93     75.379    78.745    49.19     67.405    72.897    49.136    
+SNMOT-197                          57.765    66.151    50.474    71.812    77.874    53.523    78.584    82.177    60.171    76.205    77.908    59.369    
+SNMOT-198                          50.773    62.686    41.156    68.637    77.127    45.444    72.539    82.211    53.124    68.703    76.973    52.883    
+SNMOT-199                          36.502    52.013    25.706    58.854    67.656    28.357    62.809    77.59     38.894    53.022    70.377    37.316    
+SNMOT-200                          51.361    63.835    41.368    68.199    82.164    43.745    79.696    85.106    53.109    63.116    81.99     51.749    
+COMBINED                           44.833    53.259    37.857    58.496    75.393    40.457    75.881    82.11     47.055    58.906    76.695    45.178    
+
+CLEAR: test-pedestrian             MOTA      MOTP      MODA      CLR_Re    CLR_Pr    MTR       PTR       MLR       sMOTA     CLR_TP    CLR_FN    CLR_FP    IDSW      MT        PT        ML        Frag      
+SNMOT-116                          46.161    80.232    46.78     53.159    89.286    18.519    74.074    7.4074    35.652    6092      5368      731       71        5         20        2         268       
+SNMOT-117                          55.872    79.245    56.515    67.081    86.392    35.484    54.839    9.6774    41.949    6152      3019      969       59        11        17        3         341       
+SNMOT-118                          60.848    77.19     61.782    72.644    86.993    36        44        20        44.278    7932      2987      1186      102       9         11        5         417       
+SNMOT-119                          54.723    82.029    55.344    63.713    88.389    38.462    42.308    19.231    43.274    5443      3100      715       53        10        11        5         269       
+SNMOT-120                          66.61     82.15     67.422    74.707    91.115    59.259    33.333    7.4074    53.275    8737      2958      852       95        16        9         2         318       
+SNMOT-121                          64.275    81.49     65.072    77.013    86.576    65.217    30.435    4.3478    50.02     8694      2595      1348      90        15        7         1         298       
+SNMOT-122                          51.249    79.707    52.271    59.267    89.442    23.077    57.692    19.231    39.222    6904      4745      815       119       6         15        5         379       
+SNMOT-123                          69.381    75.319    70.099    77.685    91.104    60        28        12        50.207    9626      2765      940       89        15        7         3         371       
+SNMOT-124                          55.545    79.835    56.401    67.78     85.625    36        60        4         41.878    6576      3126      1104      83        9         15        1         297       
+SNMOT-125                          49.814    79.906    50.675    55.078    92.598    19.231    65.385    15.385    38.747    5179      4224      414       81        5         17        4         242       
+SNMOT-126                          71.161    79.387    71.653    76.488    94.055    60        36        4         55.394    8084      2485      511       52        15        9         1         253       
+SNMOT-127                          67.186    82.933    67.722    80.049    86.655    72.727    18.182    9.0909    53.524    11656     2905      1795      78        16        4         2         241       
+SNMOT-128                          66.99     80.44     67.858    79.529    87.203    79.167    16.667    4.1667    51.433    11080     2852      1626      121       19        4         1         330       
+SNMOT-129                          48.199    72.969    49.46     61.607    83.531    12        76        12        31.547    7476      4659      1474      153       3         19        3         693       
+SNMOT-130                          48.69     81.139    49.489    59.611    85.485    23.81     66.667    9.5238    37.447    6714      4549      1140      90        5         14        2         457       
+SNMOT-131                          73.092    80.187    73.966    81.344    91.684    65.217    30.435    4.3478    56.975    11267     2584      1022      121       15        7         1         436       
+SNMOT-132                          66.655    78.731    67.259    73.601    92.067    56        36        8         51.001    8403      3014      724       69        14        9         2         348       
+SNMOT-133                          59.046    83.126    59.712    64.211    93.453    34.483    48.276    17.241    48.21     7993      4455      560       83        10        14        5         308       
+SNMOT-134                          73.339    82.538    74.01     78.102    95.022    43.478    56.522    0         59.701    7101      1991      372       61        10        13        0         174       
+SNMOT-135                          54.034    79.031    55.685    62.55     90.11     16.667    79.167    4.1667    40.919    7845      4697      861       207       4         19        1         431       
+SNMOT-136                          44.807    78.174    45.991    54.042    87.034    16        68        16        33.012    5021      4270      748       110       4         17        4         286       
+SNMOT-137                          64.52     80.199    65.186    71.149    92.267    44        36        20        50.432    6407      2598      537       60        11        9         5         211       
+SNMOT-138                          63.496    79.727    64.863    72.664    90.305    48        40        12        48.765    9091      3420      976       171       12        10        3         397       
+SNMOT-139                          63.642    81.72     65.028    70.324    92.997    47.619    42.857    9.5238    50.787    7410      3127      558       146       10        9         2         318       
+SNMOT-140                          45.581    79.502    46.648    52.352    90.175    17.391    69.565    13.043    34.85     6966      6340      759       142       4         16        3         473       
+SNMOT-141                          55.518    79.592    56.624    63.124    90.664    25        62.5      12.5      42.636    6623      3869      682       116       6         15        3         366       
+SNMOT-142                          30.191    79.189    31.114    34.588    90.872    12        56        32        22.993    3823      7230      384       102       3         14        8         324       
+SNMOT-143                          55.206    80.135    56.247    63.521    89.724    45.833    41.667    12.5      42.587    4820      2768      552       79        11        10        3         245       
+SNMOT-144                          30.409    79.937    31.606    42.151    79.989    0         76        24        21.952    4189      5749      1048      119       0         19        6         375       
+SNMOT-145                          29.747    81.122    30.582    35.131    88.535    0         68        32        23.115    3367      6217      436       80        0         17        8         225       
+SNMOT-146                          43.848    78.303    44.801    53.925    85.529    31.818    50        18.182    32.148    4019      3434      680       71        7         11        4         225       
+SNMOT-147                          32.669    80.975    33.53     38.648    88.306    0         66.667    33.333    25.316    2424      3848      321       54        0         18        9         144       
+SNMOT-148                          54.975    81.232    55.952    62.94     90.007    26.087    56.522    17.391    43.162    6440      3792      715       100       6         13        4         329       
+SNMOT-149                          64.459    82.653    65.333    71.83     91.704    41.667    37.5      20.833    51.999    7484      2935      677       91        10        9         5         343       
+SNMOT-150                          43.573    83.278    44.251    69.522    73.341    41.379    37.931    20.69     31.947    7491      3284      2723      73        12        11        6         221       
+SNMOT-187                          78.934    80.2      79.43     81.918    97.052    75        20.833    4.1667    62.714    12051     2660      366       73        18        5         1         262       
+SNMOT-188                          83.157    73.597    83.23     88.206    94.66     77.778    22.222    0         59.868    15758     2107      889       13        21        6         0         327       
+SNMOT-189                          72.302    79.836    73.129    79.504    92.577    72        16        12        56.271    10190     2627      817       106       18        4         3         365       
+SNMOT-190                          74.149    77.857    74.733    81.459    92.374    75        20.833    4.1667    56.112    9472      2156      782       68        18        5         1         350       
+SNMOT-191                          78.374    80.091    78.816    82.524    95.7      75        16.667    8.3333    61.944    10082     2135      453       54        18        4         2         242       
+SNMOT-192                          74.403    82.886    75.015    78.143    96.152    73.077    19.231    7.6923    61.03     9070      2537      363       71        19        5         2         272       
+SNMOT-193                          65.486    77.618    66.337    73.707    90.91     50        38.462    11.538    48.989    9091      3243      909       105       13        10        3         367       
+SNMOT-194                          78.787    81.427    79.144    83.584    94.955    83.333    12.5      4.1667    63.263    12668     2488      673       54        20        3         1         272       
+SNMOT-195                          76.405    78.527    76.94     83.081    93.118    77.273    18.182    4.5455    58.565    11176     2276      826       72        17        4         1         247       
+SNMOT-196                          64.345    75.253    64.714    70.266    92.677    33.333    62.5      4.1667    46.956    8011      3390      633       42        8         15        1         279       
+SNMOT-197                          81.446    79.447    81.943    87.08     94.43     87.5      8.3333    4.1667    63.549    12071     1791      712       69        21        2         1         265       
+SNMOT-198                          74.01     79.729    74.56     81.776    91.891    77.778    14.815    7.4074    57.433    12035     2682      1062      81        21        4         2         516       
+SNMOT-199                          62.749    74.082    63.776    75.383    86.657    44        48        8         43.211    10430     3406      1606      142       11        12        2         576       
+SNMOT-200                          75.626    83.117    76.244    79.624    95.928    75        15        10        62.183    9918      2538      421       77        15        3         2         248       
+COMBINED                           62.115    79.59     62.897    70.243    90.533    45.087    43.022    11.891    47.779    396552    167995    41467     4418      546       521       144       15941     
+
+Identity: test-pedestrian          IDF1      IDR       IDP       IDTP      IDFN      IDFP      
+SNMOT-116                          42.356    33.787    56.749    3872      7588      2951      
+SNMOT-117                          50.994    45.295    58.335    4154      5017      2967      
+SNMOT-118                          55.068    50.527    60.507    5517      5402      3601      
+SNMOT-119                          55.996    48.18     66.84     4116      4427      2042      
+SNMOT-120                          45.903    41.77     50.944    4885      6810      4704      
+SNMOT-121                          55.103    52.06     58.524    5877      5412      4165      
+SNMOT-122                          34.965    29.067    43.866    3386      8263      4333      
+SNMOT-123                          52.533    48.664    57.07     6030      6361      4536      
+SNMOT-124                          49.58     44.414    56.107    4309      5393      3371      
+SNMOT-125                          49.747    39.668    66.691    3730      5673      1863      
+SNMOT-126                          62.179    56.372    69.319    5958      4611      2637      
+SNMOT-127                          68.671    66.053    71.504    9618      4943      3833      
+SNMOT-128                          57.279    54.759    60.042    7629      6303      5077      
+SNMOT-129                          34.11     29.633    40.179    3596      8539      5354      
+SNMOT-130                          37.454    31.785    45.582    3580      7683      4274      
+SNMOT-131                          49.564    46.769    52.714    6478      7373      5811      
+SNMOT-132                          54.371    48.918    61.192    5585      5832      3542      
+SNMOT-133                          49.312    41.597    60.54     5178      7270      3375      
+SNMOT-134                          66.079    60.196    73.237    5473      3619      2000      
+SNMOT-135                          36.38     30.816    44.395    3865      8677      4841      
+SNMOT-136                          38.327    31.062    50.026    2886      6405      2883      
+SNMOT-137                          54.198    47.996    62.241    4322      4683      2622      
+SNMOT-138                          42.192    38.07     47.313    4763      7748      5304      
+SNMOT-139                          48.625    42.697    56.463    4499      6038      3469      
+SNMOT-140                          31.744    25.086    43.21     3338      9968      4387      
+SNMOT-141                          44.311    37.581    53.977    3943      6549      3362      
+SNMOT-142                          28.322    19.551    51.367    2161      8892      2046      
+SNMOT-143                          49.414    42.198    59.605    3202      4386      2170      
+SNMOT-144                          29.127    22.238    42.2      2210      7728      3027      
+SNMOT-145                          33.525    23.414    59.006    2244      7340      1559      
+SNMOT-146                          47.005    38.32     60.779    2856      4597      1843      
+SNMOT-147                          40.035    28.779    65.756    1805      4467      940       
+SNMOT-148                          48.093    40.862    58.435    4181      6051      2974      
+SNMOT-149                          52.971    47.231    60.299    4921      5498      3240      
+SNMOT-150                          47.787    46.543    49.099    5015      5760      5199      
+SNMOT-187                          66.536    61.349    72.683    9025      5686      3392      
+SNMOT-188                          87.627    84.64     90.833    15121     2744      1526      
+SNMOT-189                          52.283    48.592    56.582    6228      6589      4779      
+SNMOT-190                          58.002    54.575    61.888    6346      5282      3908      
+SNMOT-191                          55.934    52.083    60.399    6363      5854      4172      
+SNMOT-192                          63.308    57.379    70.603    6660      4947      2773      
+SNMOT-193                          47.005    42.557    52.49     5249      7085      4751      
+SNMOT-194                          68.204    64.12     72.843    9718      5438      3623      
+SNMOT-195                          57.688    54.579    61.173    7342      6110      4660      
+SNMOT-196                          63.826    56.109    74.005    6397      5004      2247      
+SNMOT-197                          68.771    66.094    71.673    9162      4700      3621      
+SNMOT-198                          58.273    55.066    61.877    8104      6613      4993      
+SNMOT-199                          41.659    38.949    44.774    5389      8447      6647      
+SNMOT-200                          54.442    49.815    60.015    6205      6251      4134      
+COMBINED                           52.364    46.496    59.927    262491    302056    175528    
+
+Count: test-pedestrian             Dets      GT_Dets   IDs       GT_IDs    
+SNMOT-116                          6823      11460     107       27        
+SNMOT-117                          7121      9171      98        31        
+SNMOT-118                          9118      10919     102       25        
+SNMOT-119                          6158      8543      90        26        
+SNMOT-120                          9589      11695     112       27        
+SNMOT-121                          10042     11289     124       23        
+SNMOT-122                          7719      11649     119       26        
+SNMOT-123                          10566     12391     92        25        
+SNMOT-124                          7680      9702      94        25        
+SNMOT-125                          5593      9403      84        26        
+SNMOT-126                          8595      10569     67        25        
+SNMOT-127                          13451     14561     94        22        
+SNMOT-128                          12706     13932     149       24        
+SNMOT-129                          8950      12135     124       25        
+SNMOT-130                          7854      11263     143       21        
+SNMOT-131                          12289     13851     120       23        
+SNMOT-132                          9127      11417     85        25        
+SNMOT-133                          8553      12448     109       29        
+SNMOT-134                          7473      9092      77        23        
+SNMOT-135                          8706      12542     116       24        
+SNMOT-136                          5769      9291      107       25        
+SNMOT-137                          6944      9005      86        25        
+SNMOT-138                          10067     12511     135       25        
+SNMOT-139                          7968      10537     102       21        
+SNMOT-140                          7725      13306     150       23        
+SNMOT-141                          7305      10492     116       24        
+SNMOT-142                          4207      11053     107       25        
+SNMOT-143                          5372      7588      80        24        
+SNMOT-144                          5237      9938      130       25        
+SNMOT-145                          3803      9584      87        25        
+SNMOT-146                          4699      7453      104       22        
+SNMOT-147                          2745      6272      70        27        
+SNMOT-148                          7155      10232     131       23        
+SNMOT-149                          8161      10419     107       24        
+SNMOT-150                          10214     10775     138       29        
+SNMOT-187                          12417     14711     67        24        
+SNMOT-188                          16647     17865     39        27        
+SNMOT-189                          11007     12817     83        25        
+SNMOT-190                          10254     11628     78        24        
+SNMOT-191                          10535     12217     68        24        
+SNMOT-192                          9433      11607     70        26        
+SNMOT-193                          10000     12334     102       26        
+SNMOT-194                          13341     15156     70        24        
+SNMOT-195                          12002     13452     85        22        
+SNMOT-196                          8644      11401     74        24        
+SNMOT-197                          12783     13862     86        24        
+SNMOT-198                          13097     14717     81        27        
+SNMOT-199                          12036     13836     107       25        
+SNMOT-200                          10339     12456     72        20        
+COMBINED                           438019    564547    4838      1211      
+
+Timing analysis:
+MotChallenge2DBox.get_raw_seq_data                                     7.0869 sec
+MotChallenge2DBox.get_preprocessed_seq_data                            4.7509 sec
+HOTA.eval_sequence                                                     10.2725 sec
+CLEAR.eval_sequence                                                    1.7928 sec
+Identity.eval_sequence                                                 0.4281 sec
+Count.eval_sequence                                                    0.0001 sec
+eval_sequence                                                          24.4472 sec
+Evaluator.evaluate                                                     24.8821 sec
+
+==================================================
+          SOCCERNET EVALUATION METRICS
+==================================================
+ Split: TEST
+ Tracker: ByteTrack
+--------------------------------------------------
+  HOTA            : 44.83%
+  DetA            : 53.26%
+  AssA            : 37.86%
+==================================================
+
